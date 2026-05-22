@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Powered WAF — Configuration</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🛡️</span>
+        <div>
+          <div class="brand-name">AI WAF</div>
+          <div class="brand-sub">Protection Engine</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="/" class="nav-item">📊 Dashboard</a>
+        <a href="/logs" class="nav-item">📋 Traffic Logs</a>
+        <a href="/config" class="nav-item active">⚙️ Configuration</a>
+        <a href="/api/docs" class="nav-item" target="_blank">📡 API Docs</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="waf-status">
+          <span class="status-dot active"></span>
+          <span>WAF Active</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Configuration</h1>
+          <p class="page-sub">WAF settings, IP management, and rules</p>
+        </div>
+      </header>
+
+      <div class="config-grid">
+        <!-- WAF Mode -->
+        <div class="card config-card">
+          <h2 class="config-title">🛡️ WAF Mode</h2>
+          <div class="form-group">
+            <label>Operating Mode</label>
+            <select id="wafMode" class="form-input">
+              <option value="active">Active (Block threats)</option>
+              <option value="monitor">Monitor only (Log, don't block)</option>
+              <option value="disabled">Disabled</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Block Threshold (AI Confidence %)</label>
+            <input type="range" id="blockThreshold" min="30" max="99" value="60"
+              oninput="document.getElementById('thresholdVal').textContent = this.value + '%'" class="form-range" />
+            <span class="range-val" id="thresholdVal">60%</span>
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()">💾 Save Settings</button>
+          <div id="settingsMsg" class="config-msg hidden"></div>
+        </div>
+
+        <!-- Rate Limiting -->
+        <div class="card config-card">
+          <h2 class="config-title">⚡ Rate Limiting</h2>
+          <div class="form-group">
+            <label class="toggle-label">
+              <input type="checkbox" id="rateLimitEnabled" />
+              Enable Rate Limiting
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Max Requests / Second</label>
+            <input type="number" id="rateLimitRps" class="form-input" value="100" min="1" max="10000" />
+          </div>
+          <button class="btn btn-primary" onclick="saveRateLimit()">💾 Save</button>
+          <div id="rateLimitMsg" class="config-msg hidden"></div>
+        </div>
+
+        <!-- Blocked IPs -->
+        <div class="card config-card full-width">
+          <div class="card-header">
+            <h2 class="config-title">🚫 Blocked IP Addresses</h2>
+            <div class="topbar-actions">
+              <input type="text" id="blockIpInput" class="form-input sm" placeholder="192.168.1.1" />
+              <input type="text" id="blockReasonInput" class="form-input sm" placeholder="Reason" />
+              <button class="btn btn-danger" onclick="addBlockedIP()">+ Block IP</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr><th>IP Address</th><th>Reason</th><th>Blocked At</th><th>Expires</th><th>Action</th></tr>
+              </thead>
+              <tbody id="blockedIPsTable">
+                <tr><td colspan="5" class="empty-row">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Detection Rules -->
+        <div class="card config-card full-width">
+          <h2 class="config-title">📋 Active Detection Rules</h2>
+          <div class="rules-list" id="rulesList">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/js/config.js"></script>
+</body>
+</html>

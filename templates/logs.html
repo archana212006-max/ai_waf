@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Powered WAF — Traffic Logs</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🛡️</span>
+        <div>
+          <div class="brand-name">AI WAF</div>
+          <div class="brand-sub">Protection Engine</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="/" class="nav-item">📊 Dashboard</a>
+        <a href="/logs" class="nav-item active">📋 Traffic Logs</a>
+        <a href="/config" class="nav-item">⚙️ Configuration</a>
+        <a href="/api/docs" class="nav-item" target="_blank">📡 API Docs</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="waf-status">
+          <span class="status-dot active"></span>
+          <span>WAF Active</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Traffic Logs</h1>
+          <p class="page-sub">Full request history with threat analysis</p>
+        </div>
+        <div class="topbar-actions">
+          <label class="toggle-label">
+            <input type="checkbox" id="blockedOnly" onchange="loadLogs()" />
+            Blocked only
+          </label>
+          <select id="limitSelect" class="form-input sm" onchange="loadLogs()">
+            <option value="50">50 rows</option>
+            <option value="100">100 rows</option>
+            <option value="200">200 rows</option>
+            <option value="500">500 rows</option>
+          </select>
+          <button class="btn btn-primary" onclick="loadLogs()">🔄 Refresh</button>
+        </div>
+      </header>
+
+      <div class="card" style="margin:0">
+        <div class="table-wrap">
+          <table class="data-table full">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Timestamp</th>
+                <th>IP Address</th>
+                <th>Method</th>
+                <th>Path</th>
+                <th>Status</th>
+                <th>Attack Types</th>
+                <th>Confidence</th>
+                <th>Level</th>
+                <th>Rule</th>
+                <th>ms</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="logsTable">
+              <tr><td colspan="12" class="empty-row">Loading logs...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Detail panel -->
+      <div class="detail-panel hidden" id="detailPanel">
+        <div class="detail-header">
+          <h3>Request Details</h3>
+          <button onclick="closeDetail()" class="modal-close">✕</button>
+        </div>
+        <div id="detailBody"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/js/logs.js"></script>
+</body>
+</html>

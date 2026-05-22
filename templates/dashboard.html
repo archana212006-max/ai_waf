@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI-WAF | Real-Time Dashboard</title>
+<link rel="stylesheet" href="/static/css/main.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="shield">🛡️</span>
+    <span class="brand-text">AI<span class="accent">WAF</span></span>
+    <span class="status-pill" id="statusPill">● ACTIVE</span>
+  </div>
+  <div class="nav-links">
+    <a href="/" class="nav-link active">Dashboard</a>
+    <a href="/logs" class="nav-link">Logs</a>
+    <a href="/config" class="nav-link">Config</a>
+    <a href="/api/docs" class="nav-link" target="_blank">API Docs</a>
+  </div>
+  <div class="nav-right">
+    <span class="clock" id="clock"></span>
+  </div>
+</nav>
+
+<main class="main">
+  <!-- Stat Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📡</div>
+      <div class="stat-body">
+        <div class="stat-value" id="totalRequests">—</div>
+        <div class="stat-label">Total Requests</div>
+      </div>
+    </div>
+    <div class="stat-card danger">
+      <div class="stat-icon">🚫</div>
+      <div class="stat-body">
+        <div class="stat-value" id="totalBlocked">—</div>
+        <div class="stat-label">Threats Blocked</div>
+      </div>
+    </div>
+    <div class="stat-card warning">
+      <div class="stat-icon">📊</div>
+      <div class="stat-body">
+        <div class="stat-value" id="blockRate">—</div>
+        <div class="stat-label">Block Rate</div>
+      </div>
+    </div>
+    <div class="stat-card info">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-body">
+        <div class="stat-value" id="reqPerMin">—</div>
+        <div class="stat-label">Req / Min</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panels">
+    <!-- Timeline Chart -->
+    <div class="panel chart-panel">
+      <div class="panel-header">
+        <h2>Traffic Timeline <span class="badge">Live</span></h2>
+        <div class="chart-controls">
+          <button class="ctrl-btn active" data-hours="1">1h</button>
+          <button class="ctrl-btn" data-hours="6">6h</button>
+          <button class="ctrl-btn" data-hours="24">24h</button>
+        </div>
+      </div>
+      <canvas id="timelineChart" height="80"></canvas>
+    </div>
+
+    <!-- Attack Breakdown -->
+    <div class="panel donut-panel">
+      <div class="panel-header">
+        <h2>Attack Types</h2>
+      </div>
+      <canvas id="attackChart" height="180"></canvas>
+      <div id="attackLegend" class="donut-legend"></div>
+    </div>
+  </div>
+
+  <div class="panels">
+    <!-- Live Feed -->
+    <div class="panel feed-panel">
+      <div class="panel-header">
+        <h2>Live Threat Feed <span class="badge pulse">Live</span></h2>
+        <label class="toggle-label">
+          <input type="checkbox" id="blockedOnly"/>
+          Blocked only
+        </label>
+      </div>
+      <div class="feed" id="liveFeed">
+        <div class="feed-empty">Waiting for traffic…</div>
+      </div>
+    </div>
+
+    <!-- Top Attackers -->
+    <div class="panel top-panel">
+      <div class="panel-header">
+        <h2>Top Attacker IPs</h2>
+      </div>
+      <table class="ip-table">
+        <thead><tr><th>IP Address</th><th>Hits</th><th>Action</th></tr></thead>
+        <tbody id="topIPs"></tbody>
+      </table>
+
+      <div class="panel-header" style="margin-top:24px">
+        <h2>Payload Tester</h2>
+      </div>
+      <div class="tester">
+        <textarea id="testPayload" placeholder="Enter payload to test e.g. ' OR 1=1-- or <script>alert(1)</script>" rows="3"></textarea>
+        <select id="testField">
+          <option value="query_string">Query String</option>
+          <option value="body">Body</option>
+          <option value="user_agent">User-Agent</option>
+        </select>
+        <button id="testBtn" class="btn-primary">Test Payload</button>
+        <div id="testResult" class="test-result hidden"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>
