@@ -12,14 +12,14 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request):
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse(request, "dashboard.html")
 
 
 @router.get("/logs", response_class=HTMLResponse)
 async def logs_page(request: Request):
-    return templates.TemplateResponse("logs.html", {"request": request})
+    return templates.TemplateResponse(request, "logs.html")
 
 
 @router.get("/config", response_class=HTMLResponse)
 async def config_page(request: Request):
-    return templates.TemplateResponse("config.html", {"request": request})
+    return templates.TemplateResponse(request, "config.html")
